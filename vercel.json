@@ -22,6 +22,10 @@
             "dest": "/FrontEnd/cardio-ai-frontend/dist/assets/$1"
         },
         {
+            "src": "/(.*\\.[^/]+)$",
+            "dest": "/FrontEnd/cardio-ai-frontend/dist/$1"
+        },
+        {
             "handle": "filesystem"
         },
         {
