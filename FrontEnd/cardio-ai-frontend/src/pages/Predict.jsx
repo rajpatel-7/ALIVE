@@ -240,7 +240,12 @@ export default function Predict() {
       navigate('/result');
     } catch (e) {
       console.error(e);
-      // Demo Fallback
+      // DEBUG: Show validation error instead of fake data
+      alert(`API Error: ${e.message}\nStatus: ${e.response?.status}\nResponse: ${JSON.stringify(e.response?.data)}`);
+      setLoading(false);
+      return;
+
+      /* DEMO FALLBACK REMOVED FOR DEBUGGING
       const demoData = {
         ...form,
         name: form.name || "Guest User",
@@ -260,6 +265,7 @@ export default function Predict() {
 
       navigate('/result');
       setLoading(false);
+      */
     }
   };
 
