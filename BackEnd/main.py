@@ -49,6 +49,7 @@ def risk_category(prob):
 
 
 # ---------------- PREDICTION ----------------
+@app.post("/api/predict")
 @app.post("/predict")
 def predict(data: PatientInput):
 
