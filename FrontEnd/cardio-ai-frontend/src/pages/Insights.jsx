@@ -1,6 +1,7 @@
 import { Brain, Database, Zap, BarChart3, CheckCircle, TrendingUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import PageTransition from "../components/PageTransition";
 
 export default function Insights() {
   const chartRef = useRef(null);
