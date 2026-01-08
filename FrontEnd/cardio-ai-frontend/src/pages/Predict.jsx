@@ -4,6 +4,7 @@ import axios from "axios";
 import { User, Ruler, Weight, Activity, Cigarette, Wine, MoveRight, ChevronLeft, Check, Mic, Keyboard, PlayCircle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import useVoiceAssistant from "../hooks/useVoiceAssistant";
+import PageTransition from "../components/PageTransition";
 
 
 export default function Predict() {
@@ -566,7 +567,7 @@ export default function Predict() {
 
 
 
-    </div>
+    </PageTransition>
   );
 }
 

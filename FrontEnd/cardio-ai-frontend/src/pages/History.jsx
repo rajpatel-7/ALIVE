@@ -3,6 +3,8 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Calendar, ChevronRight, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 
+import PageTransition from "../components/PageTransition";
+
 export default function History() {
     const [history, setHistory] = useState([]);
 
@@ -94,7 +96,7 @@ export default function History() {
                 </table>
             </div>
 
-        </div>
+        </PageTransition>
     );
 }
 

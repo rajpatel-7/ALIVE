@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Activity, LayoutGrid, ClipboardList, BookOpen, Clock, Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import AliveLogo from "./AliveLogo";
 
 export default function Navbar() {
@@ -46,15 +47,25 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu Overlay */}
-      {isOpen && (
-        <div className="md:hidden absolute top-16 left-0 w-full bg-white border-b border-slate-200 shadow-xl flex flex-col p-4 animate-in slide-in-from-top-5 duration-200">
-          <NavLink to="/" icon={<LayoutGrid size={18} />} label="Home" active={isActive("/")} onClick={handleLinkClick} mobile />
-          <NavLink to="/predict" icon={<Activity size={18} />} label="Predict" active={isActive("/predict")} onClick={handleLinkClick} mobile />
-          <NavLink to="/history" icon={<Clock size={18} />} label="History" active={isActive("/history")} onClick={handleLinkClick} mobile />
-          <NavLink to="/insights" icon={<BookOpen size={18} />} label="Insights" active={isActive("/insights")} onClick={handleLinkClick} mobile />
-          <NavLink to="/about" icon={<ClipboardList size={18} />} label="About" active={isActive("/about")} onClick={handleLinkClick} mobile />
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden overflow-hidden bg-white border-b border-slate-200 shadow-xl flex flex-col"
+          >
+            <div className="p-4 space-y-1">
+              <NavLink to="/" icon={<LayoutGrid size={18} />} label="Home" active={isActive("/")} onClick={handleLinkClick} mobile />
+              <NavLink to="/predict" icon={<Activity size={18} />} label="Predict" active={isActive("/predict")} onClick={handleLinkClick} mobile />
+              <NavLink to="/history" icon={<Clock size={18} />} label="History" active={isActive("/history")} onClick={handleLinkClick} mobile />
+              <NavLink to="/insights" icon={<BookOpen size={18} />} label="Insights" active={isActive("/insights")} onClick={handleLinkClick} mobile />
+              <NavLink to="/about" icon={<ClipboardList size={18} />} label="About" active={isActive("/about")} onClick={handleLinkClick} mobile />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

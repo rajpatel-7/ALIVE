@@ -2,11 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, Activity, ShieldCheck, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 
+import PageTransition from "../components/PageTransition";
+
 export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-8 md:py-16">
+    <PageTransition className="container max-w-6xl mx-auto px-4 py-8 md:py-16">
+
 
       {/* Hero Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -122,7 +125,7 @@ export default function Home() {
         </div>
       </footer>
 
-    </div>
+    </PageTransition>
   );
 }
 

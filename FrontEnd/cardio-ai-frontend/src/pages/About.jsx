@@ -1,8 +1,9 @@
 import { Shield, Activity, FileText } from "lucide-react";
+import PageTransition from "../components/PageTransition";
 
 export default function About() {
   return (
-    <div className="container max-w-3xl mx-auto px-4">
+    <PageTransition className="container max-w-3xl mx-auto px-4 py-8">
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold text-slate-900 mb-4">About Cardio.AI</h1>
         <p className="text-lg text-slate-500">Reliable, AI-powered cardiovascular health assessment.</p>
@@ -33,7 +34,7 @@ export default function About() {
           </div>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
 

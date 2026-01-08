@@ -33,7 +33,7 @@ export default function Insights() {
   }, []);
 
   return (
-    <div className="container max-w-5xl mx-auto px-4">
+    <PageTransition className="container max-w-5xl mx-auto px-4 py-8">
 
       {/* Header */}
       <motion.div
@@ -127,7 +127,7 @@ export default function Insights() {
           ))}
         </div>
       </motion.div>
-    </div>
+    </PageTransition>
   );
 }
 

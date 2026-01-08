@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import MedicalReportPDF from "../components/MedicalReportPDF";
+import PageTransition from "../components/PageTransition";
 
 export default function Result() {
   const navigate = useNavigate();
@@ -316,6 +317,6 @@ export default function Result() {
 
 
 
-    </div >
+    </PageTransition >
   );
 }
