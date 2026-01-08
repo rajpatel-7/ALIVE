@@ -61,6 +61,13 @@ export default function Predict() {
     // Only process if we have a transcript and not currently speaking
     if (!transcript || isSpeaking) return;
 
+    // Verify Connection on Mount
+    useEffect(() => {
+      axios.get("https://alive-production-635d.up.railway.app/")
+        .then(res => console.log("Backend Connection Success:", res.data))
+        .catch(err => alert("Backend Connection Failed (Root): " + err.message));
+    }, []);
+
     const processAnswer = async () => {
       const text = transcript.toLowerCase();
       console.log("Processing:", text, "Step:", voiceStep);
