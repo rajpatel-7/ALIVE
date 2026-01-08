@@ -7,13 +7,22 @@ import joblib
 app = FastAPI()
 
 # In your FastAPI main.py
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"], # Allow ALL origins
-    allow_credentials=False, # No cookies needed for this app
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# MANUAL CORS MIDDLEWARE (More robust for debugging)
+from fastapi import Request, Response
+
+@app.middleware("http")
+async def cors_middleware(request: Request, call_next):
+    if request.method == "OPTIONS":
+        # Handle preflight immediately
+        response = Response(status_code=200)
+    else:
+        response = await call_next(request)
+    
+    # Add permissive headers to EVERY response
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    return response
 
 # ---------------- LOAD MODEL & FEATURES ----------------
 model = joblib.load("cardio_model1.pkl")
