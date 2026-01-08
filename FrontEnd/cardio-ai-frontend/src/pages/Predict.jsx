@@ -216,7 +216,7 @@ export default function Predict() {
 
       await new Promise(r => setTimeout(r, 800));
 
-      const res = await axios.post("http://127.0.0.1:8000/predict", payload);
+      const res = await axios.post("/api/predict", payload);
 
       const resultData = {
         ...res.data,

@@ -1,0 +1,16 @@
+.vercel
+.git
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+node_modules
+dist
+build
+coverage
+.env
+*.ipynb
+BackEnd/.venv
+FrontEnd/cardio-ai-frontend/node_modules
