@@ -7,18 +7,10 @@ import joblib
 app = FastAPI()
 
 # In your FastAPI main.py
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:3000",
-    "https://alive-kappa.vercel.app", # Vercel Frontend
-    "https://alive-production-635d.up.railway.app", # Self
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins, # Explicit list is safer for CORS
-    allow_credentials=True,
+    allow_origins=["*"], # Allow ALL origins
+    allow_credentials=False, # No cookies needed for this app
     allow_methods=["*"],
     allow_headers=["*"],
 )
