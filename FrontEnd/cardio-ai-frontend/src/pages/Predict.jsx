@@ -240,6 +240,7 @@ export default function Predict() {
       navigate('/result');
     } catch (e) {
       console.error(e);
+      alert(`API Error: ${e.message}\n${e.response ? JSON.stringify(e.response.data) : ''}`);
       // Demo Fallback
       const demoData = {
         ...form,
