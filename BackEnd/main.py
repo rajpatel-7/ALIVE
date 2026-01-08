@@ -62,6 +62,9 @@ def risk_category(prob):
 @app.post("/api/predict")
 @app.post("/predict")
 def predict(data: PatientInput):
+    import math # Import math for isnan check
+
+    # ... (rest of code)
 
     # ---- feature engineering (EXACTLY like notebook) ----
     bmi = data.weight / ((data.height / 100) ** 2)
@@ -104,7 +107,14 @@ def predict(data: PatientInput):
              return {"error": "Startup Error", "details": LOAD_ERROR}
         
         # MAINTAIN EXACT ORDER AS IN FEATURES LIST
-        input_vector = [row[f] for f in FEATURES]
+        input_vector = []
+        for f in FEATURES:
+            val = row[f]
+            # Replace NaN/Infinity with 0.0 to prevent model crash
+            if val is None or (isinstance(val, float) and (math.isnan(val) or math.isinf(val))):
+                input_vector.append(0.0)
+            else:
+                input_vector.append(val)
         
         # prob = model.predict_proba(df)[0][1] # OLD PANDAS WAY
         prob = model.predict_proba([input_vector])[0][1]
