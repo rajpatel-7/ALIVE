@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Brand Colors - Medical/Trustworthy */
+  --primary: #4f46e5;
+  /* Indigo-600 */
+  --primary-light: #818cf8;
+  /* Indigo-400 */
+  --primary-dark: #3730a3;
+  /* Indigo-800 */
+
+  --secondary: #0ea5e9;
+  /* Sky-500 */
+
+  /* Status Colors */
+  --success: #10b981;
+  /* Emerald-500 */
+  --warning: #f59e0b;
+  /* Amber-500 */
+  --danger: #ef4444;
+  /* Red-500 */
+
+  /* Neutral scale for Light Mode */
+  --bg-page: #f8fafc;
+  /* Slate-50 */
+  --bg-card: #ffffff;
+  /* White */
+  --bg-input: #f1f5f9;
+  /* Slate-100 */
+
+  --text-main: #0f172a;
+  /* Slate-900 */
+  --text-muted: #64748b;
+  /* Slate-500 */
+  --text-light: #94a3b8;
+  /* Slate-400 */
+
+  --border-light: #e2e8f0;
+  /* Slate-200 */
+  --border-focus: #c7d2fe;
+  /* Indigo-200 */
+
+  /* Shadows - Soft 'Apple-like' */
+  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-main);
+}
+
+/* Custom Component Utility Classes */
+
+.btn-primary {
+  @apply bg-indigo-600 text-white font-semibold py-3 px-6 rounded-xl shadow-sm hover:translate-y-[-1px] hover:shadow-md hover:bg-indigo-700 transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply bg-white text-slate-700 border border-slate-200 font-semibold py-3 px-6 rounded-xl shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 active:scale-95;
+}
+
+.card {
+  @apply bg-white/80 backdrop-blur-md rounded-2xl border border-white/50 shadow-sm transition-all duration-300;
+}
+
+.card-hover {
+  @apply hover:shadow-lg hover:border-indigo-100;
+}
+
+.input-base {
+  @apply w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-indigo-100 focus:border-indigo-500 block p-3.5 transition-all outline-none placeholder:text-slate-400 font-medium;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Range Slider Custom Styling */
+input[type=range] {
+  @apply appearance-none bg-transparent cursor-pointer;
+}
+
+/* React Range Slider will be custom built, but webkit defaults reset here */

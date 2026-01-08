@@ -1,15 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import pandas as pd
+import numpy as np
 import joblib
-
-import os
 
 app = FastAPI()
 
 # In your FastAPI main.py
-origins = ["*"]
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",  # Add this
+    "http://localhost:3000",
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -20,10 +22,8 @@ app.add_middleware(
 )
 
 # ---------------- LOAD MODEL & FEATURES ----------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Loading without try-except for local dev (fail fast if missing)
-model = joblib.load(os.path.join(BASE_DIR, "cardio_model1.pkl"))
-FEATURES = joblib.load(os.path.join(BASE_DIR, "features.pkl"))
+model = joblib.load("cardio_model1.pkl")
+FEATURES = joblib.load("features.pkl")
 
 # ---------------- INPUT SCHEMA ----------------
 class PatientInput(BaseModel):
@@ -86,10 +86,22 @@ def predict(data: PatientInput):
         "glucose_risk_Well Above Normal": int(data.gluc == 3),
     }
 
-    # ---- build dataframe in SAME ORDER ----
-    df = pd.DataFrame([[row[f] for f in FEATURES]], columns=FEATURES)
+    # ---- build input array in SAME ORDER ----
+    # Ensure the order matches FEATURES exactly
+    # FEATURES was loaded from 'features.pkl'
+    
+    # We construct the list of values in the order of FEATURES
+    # Since we can't look up columns by name in a numpy array easily like a DataFrame,
+    # we must ensure we construct the list directly.
+    # The previous code used: df = pd.DataFrame([[row[f] for f in FEATURES]], columns=FEATURES)
+    # This implies 'row' (dictionary) keys match 'FEATURES' names.
+    
+    input_data = [row[f] for f in FEATURES]
+    
+    # Reshape for single sample prediction (1, n_features)
+    X = np.array([input_data])
 
-    prob = model.predict_proba(df)[0][1]
+    prob = model.predict_proba(X)[0][1]
     category = risk_category(prob)
     advice_list = ["Maintain a balanced diet", "Regular exercise is recommended"];
     if category == "High Risk":
@@ -101,13 +113,11 @@ def predict(data: PatientInput):
         "risk_probability": round(float(prob), 3),
         "risk_category": category,
         "note": "Population-based risk estimate, not a diagnosis",
-        "advice": advice_list  # Sending this ensures the frontend has something to list
+        "advice": advice_list
     }
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
 @app.get("/")
 def root():
     return {"status": "Cardio Risk API running"}
