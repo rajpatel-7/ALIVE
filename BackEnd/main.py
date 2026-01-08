@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import numpy as np
+import pandas as pd
 import joblib
 
 app = FastAPI()
@@ -90,18 +90,10 @@ def predict(data: PatientInput):
     # Ensure the order matches FEATURES exactly
     # FEATURES was loaded from 'features.pkl'
     
-    # We construct the list of values in the order of FEATURES
-    # Since we can't look up columns by name in a numpy array easily like a DataFrame,
-    # we must ensure we construct the list directly.
-    # The previous code used: df = pd.DataFrame([[row[f] for f in FEATURES]], columns=FEATURES)
-    # This implies 'row' (dictionary) keys match 'FEATURES' names.
-    
-    input_data = [row[f] for f in FEATURES]
-    
-    # Reshape for single sample prediction (1, n_features)
-    X = np.array([input_data])
+    # ---- build dataframe in SAME ORDER ----
+    df = pd.DataFrame([[row[f] for f in FEATURES]], columns=FEATURES)
 
-    prob = model.predict_proba(X)[0][1]
+    prob = model.predict_proba(df)[0][1]
     category = risk_category(prob)
     advice_list = ["Maintain a balanced diet", "Regular exercise is recommended"];
     if category == "High Risk":
