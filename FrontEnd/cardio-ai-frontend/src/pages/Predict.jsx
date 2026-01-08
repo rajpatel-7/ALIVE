@@ -216,7 +216,8 @@ export default function Predict() {
 
       await new Promise(r => setTimeout(r, 800));
 
-      const res = await axios.post("http://127.0.0.1:8000/predict", payload);
+      const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+      const res = await axios.post(`${API_URL}/predict`, payload);
 
       const resultData = {
         ...res.data,
