@@ -23,7 +23,7 @@ export default function History() {
     }, []);
 
     return (
-        <div className="container max-w-5xl mx-auto px-4">
+        <PageTransition className="container max-w-5xl mx-auto px-4 py-8">
 
             <div className="mb-10">
                 <h1 className="text-3xl font-bold text-slate-900 mb-2">History Dashboard</h1>
