@@ -1,18 +1,23 @@
-# General
-.DS_Store
-Thumbs.db
+# Dependencies
 node_modules/
-__pycache__/
-*.pyc
-.env
 .venv/
 venv/
+__pycache__/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Build
 dist/
 build/
 *.log
+*.pyc
+
+# Vercel
 .vercel/
-*.ipynb_checkpoints/
 
 # Project specific
 BackEnd_Deploy/
 BackEnd_Deploy_Temp/
+*.ipynb_checkpoints/

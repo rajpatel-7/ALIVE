@@ -1,0 +1,6 @@
+# Vercel Ignore for Frontend
+node_modules
+.git
+dist
+.env
+../BackEnd
