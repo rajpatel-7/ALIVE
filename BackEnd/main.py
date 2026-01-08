@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import pandas as pd
+# import pandas as pd # Removed for Lite Deployment
 import joblib
 
 import os
@@ -87,9 +87,12 @@ def predict(data: PatientInput):
     }
 
     # ---- build dataframe in SAME ORDER ----
-    df = pd.DataFrame([[row[f] for f in FEATURES]], columns=FEATURES)
-
-    prob = model.predict_proba(df)[0][1]
+    # ---- build input vector directly as list of lists ----
+    # MAINTAIN EXACT ORDER AS IN FEATURES LIST
+    input_vector = [row[f] for f in FEATURES]
+    
+    # prob = model.predict_proba(df)[0][1] # OLD PANDAS WAY
+    prob = model.predict_proba([input_vector])[0][1]
     category = risk_category(prob)
     advice_list = ["Maintain a balanced diet", "Regular exercise is recommended"];
     if category == "High Risk":
