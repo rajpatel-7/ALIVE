@@ -26,7 +26,7 @@
         },
         {
             "src": "/(.*)",
-            "dest": "/FrontEnd/cardio-ai-frontend/index.html"
+            "dest": "/FrontEnd/cardio-ai-frontend/dist/index.html"
         }
     ]
 }
