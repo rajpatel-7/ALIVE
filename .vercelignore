@@ -1,0 +1,9 @@
+.venv
+.git
+__pycache__
+*.ipynb
+node_modules
+FrontEnd/node_modules
+FrontEnd/cardio-ai-frontend/node_modules
+.env
+.env.local

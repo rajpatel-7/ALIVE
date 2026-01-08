@@ -1,0 +1,25 @@
+{
+    "builds": [
+        {
+            "src": "BackEnd/main.py",
+            "use": "@vercel/python"
+        },
+        {
+            "src": "FrontEnd/cardio-ai-frontend/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "dist"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/BackEnd/main.py"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/FrontEnd/cardio-ai-frontend/$1"
+        }
+    ]
+}
