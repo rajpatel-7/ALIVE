@@ -403,7 +403,7 @@ export default function Predict() {
 
   // --- TEXT MODE ---
   return (
-    <div className="container max-w-2xl mx-auto px-4">
+    <PageTransition className="container max-w-2xl mx-auto px-4">
       {/* (Standard Form UI retained) */}
       <div className="mb-8 md:mb-12">
         <div className="flex items-center gap-4 mb-6">
