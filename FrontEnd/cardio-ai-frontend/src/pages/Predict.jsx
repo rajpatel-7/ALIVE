@@ -63,7 +63,7 @@ export default function Predict() {
 
     // Verify Connection on Mount
     useEffect(() => {
-      axios.get("https://alive-production-635d.up.railway.app/")
+      axios.get("https://alive-production-5dc1.up.railway.app/")
         .then(res => console.log("Backend Connection Success:", res.data))
         .catch(err => alert("Backend Connection Failed (Root): " + err.message));
     }, []);
@@ -223,7 +223,7 @@ export default function Predict() {
 
       await new Promise(r => setTimeout(r, 800));
 
-      const res = await axios.post("https://alive-production-635d.up.railway.app/predict", payload);
+      const res = await axios.post("https://alive-production-5dc1.up.railway.app/predict", payload);
 
       const resultData = {
         ...res.data,
