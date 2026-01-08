@@ -1,10 +1,15 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Activity, LayoutGrid, ClipboardList, BookOpen, Clock } from "lucide-react";
+import { Activity, LayoutGrid, ClipboardList, BookOpen, Clock, Menu, X } from "lucide-react";
 import AliveLogo from "./AliveLogo";
 
 export default function Navbar() {
   const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
   const isActive = (path) => location.pathname === path;
+
+  // Close menu when route changes
+  const handleLinkClick = () => setIsOpen(false);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 h-16">
@@ -29,24 +34,39 @@ export default function Navbar() {
           <NavLink to="/about" icon={<ClipboardList size={18} />} label="About" active={isActive("/about")} />
         </div>
 
-        {/* Mobile Menu Button (Placeholder) */}
+        {/* Mobile Menu Button */}
         <div className="md:hidden">
-          {/* Mobile menu implementation can be added here */}
-          <button className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
-            <LayoutGrid size={24} />
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isOpen && (
+        <div className="md:hidden absolute top-16 left-0 w-full bg-white border-b border-slate-200 shadow-xl flex flex-col p-4 animate-in slide-in-from-top-5 duration-200">
+          <NavLink to="/" icon={<LayoutGrid size={18} />} label="Home" active={isActive("/")} onClick={handleLinkClick} mobile />
+          <NavLink to="/predict" icon={<Activity size={18} />} label="Predict" active={isActive("/predict")} onClick={handleLinkClick} mobile />
+          <NavLink to="/history" icon={<Clock size={18} />} label="History" active={isActive("/history")} onClick={handleLinkClick} mobile />
+          <NavLink to="/insights" icon={<BookOpen size={18} />} label="Insights" active={isActive("/insights")} onClick={handleLinkClick} mobile />
+          <NavLink to="/about" icon={<ClipboardList size={18} />} label="About" active={isActive("/about")} onClick={handleLinkClick} mobile />
+        </div>
+      )}
     </nav>
   );
 }
 
-function NavLink({ to, icon, label, active }) {
+function NavLink({ to, icon, label, active, onClick, mobile }) {
   return (
     <Link
       to={to}
+      onClick={onClick}
       className={`
         flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200
+        ${mobile ? "w-full py-3 text-base" : ""}
         ${active
           ? "bg-indigo-50 text-indigo-700"
           : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
