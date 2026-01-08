@@ -1,14 +1,33 @@
-# Exclude all node_modules and venvs from upload
+# Vercel Ignore File
+# Ignore everything first? No, explicit excludes are safer.
+
+# 1. DEPENDECIES (The 300MB Killers)
 node_modules
 */node_modules
 **/node_modules
+**/**/node_modules
+
+# 2. VIRTUAL ENVS
 .venv
-*.venv
+*/.venv
+**/.venv
 venv
-__pycache__
-*.pyc
+*/venv
+**/venv
+.env
+*.env
+
+# 3. GIT & CACHE
 .git
-.DS_Store
+.vercel
+__pycache__
+**/__pycache__
+*.pyc
+*.pyo
+
+# 4. BUILD OUTPUTS
 dist
 build
-coverage
+
+# 5. SPECIFIC FOLDERS (Optional but safe)
+FrontEnd/cardio-ai-frontend/node_modules
