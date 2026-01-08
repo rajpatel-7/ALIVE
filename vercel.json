@@ -18,6 +18,10 @@
             "dest": "/BackEnd/main.py"
         },
         {
+            "src": "/assets/(.*)",
+            "dest": "/FrontEnd/cardio-ai-frontend/dist/assets/$1"
+        },
+        {
             "handle": "filesystem"
         },
         {
