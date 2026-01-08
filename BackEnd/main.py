@@ -25,6 +25,7 @@ app.add_middleware(
 
 # ---------------- LOAD MODEL & FEATURES ----------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Loading without try-except for local dev (fail fast if missing)
 model = joblib.load(os.path.join(BASE_DIR, "cardio_model1.pkl"))
 FEATURES = joblib.load(os.path.join(BASE_DIR, "features.pkl"))
 
@@ -106,9 +107,11 @@ def predict(data: PatientInput):
         "note": "Population-based risk estimate, not a diagnosis",
         "advice": advice_list  # Sending this ensures the frontend has something to list
     }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
 @app.get("/")
 def root():
     return {"status": "Cardio Risk API running"}
