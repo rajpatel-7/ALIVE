@@ -216,7 +216,7 @@ export default function Predict() {
 
       await new Promise(r => setTimeout(r, 800));
 
-      const res = await axios.post("/api/predict", payload);
+      const res = await axios.post("http://127.0.0.1:8000/predict", payload);
 
       const resultData = {
         ...res.data,
@@ -240,12 +240,7 @@ export default function Predict() {
       navigate('/result');
     } catch (e) {
       console.error(e);
-      // DEBUG: Show validation error instead of fake data
-      alert(`API Error: ${e.message}\nStatus: ${e.response?.status}\nResponse: ${JSON.stringify(e.response?.data)}`);
-      setLoading(false);
-      return;
-
-      /* DEMO FALLBACK REMOVED FOR DEBUGGING
+      // Demo Fallback
       const demoData = {
         ...form,
         name: form.name || "Guest User",
@@ -265,7 +260,6 @@ export default function Predict() {
 
       navigate('/result');
       setLoading(false);
-      */
     }
   };
 

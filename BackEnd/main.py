@@ -1,16 +1,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-# import pandas as pd # Removed for Lite Deployment
+import pandas as pd
 import joblib
 
 import os
 
 app = FastAPI()
 
-# Allow all origins for Vercel
-origins = ["*"]
-
+# In your FastAPI main.py
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,19 +24,9 @@ app.add_middleware(
 )
 
 # ---------------- LOAD MODEL & FEATURES ----------------
-# ---------------- LOAD MODEL & FEATURES ----------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-model = None
-FEATURES = []
-LOAD_ERROR = None
-
-try:
-    model = joblib.load(os.path.join(BASE_DIR, "cardio_model1.pkl"))
-    FEATURES = joblib.load(os.path.join(BASE_DIR, "features.pkl"))
-except Exception as e:
-    import traceback
-    LOAD_ERROR = f"Model Load Failed: {str(e)}\n{traceback.format_exc()}"
-    print(LOAD_ERROR)
+model = joblib.load(os.path.join(BASE_DIR, "cardio_model1.pkl"))
+FEATURES = joblib.load(os.path.join(BASE_DIR, "features.pkl"))
 
 # ---------------- INPUT SCHEMA ----------------
 class PatientInput(BaseModel):
@@ -59,12 +52,8 @@ def risk_category(prob):
 
 
 # ---------------- PREDICTION ----------------
-@app.post("/api/predict")
 @app.post("/predict")
 def predict(data: PatientInput):
-    import math # Import math for isnan check
-
-    # ... (rest of code)
 
     # ---- feature engineering (EXACTLY like notebook) ----
     bmi = data.weight / ((data.height / 100) ** 2)
@@ -101,48 +90,22 @@ def predict(data: PatientInput):
     }
 
     # ---- build dataframe in SAME ORDER ----
-    # ---- build input vector directly as list of lists ----
-    try:
-        if LOAD_ERROR:
-             return {"error": "Startup Error", "details": LOAD_ERROR}
-        
-        # MAINTAIN EXACT ORDER AS IN FEATURES LIST
-        input_vector = []
-        for f in FEATURES:
-            val = row[f]
-            # Replace NaN/Infinity with 0.0 to prevent model crash
-            if val is None or (isinstance(val, float) and (math.isnan(val) or math.isinf(val))):
-                input_vector.append(0.0)
-            else:
-                input_vector.append(val)
-        
-        # prob = model.predict_proba(df)[0][1] # OLD PANDAS WAY
-        prob = model.predict_proba([input_vector])[0][1]
-        
-        # Safety Check: Ensure prob is a valid float
-        if prob is None or math.isnan(prob) or math.isinf(prob):
-             prob = 0.0
+    df = pd.DataFrame([[row[f] for f in FEATURES]], columns=FEATURES)
 
-        category = risk_category(prob)
-        advice_list = ["Maintain a balanced diet", "Regular exercise is recommended"];
-        if category == "High Risk":
-            advice_list = ["Consult a doctor immediately", "Monitor blood pressure daily", "Reduce salt intake"]
-        elif category == "Moderate Risk":
-            advice_list = ["Increase physical activity", "Reduce fatty foods", "Schedule a check-up"]
+    prob = model.predict_proba(df)[0][1]
+    category = risk_category(prob)
+    advice_list = ["Maintain a balanced diet", "Regular exercise is recommended"];
+    if category == "High Risk":
+        advice_list = ["Consult a doctor immediately", "Monitor blood pressure daily", "Reduce salt intake"]
+    elif category == "Moderate Risk":
+        advice_list = ["Increase physical activity", "Reduce fatty foods", "Schedule a check-up"]
 
-        return {
-            "risk_probability": round(float(prob), 3),
-            "risk_category": category,
-            "note": "Population-based risk estimate, not a diagnosis",
-            "advice": advice_list
-        }
-    except Exception as e:
-        import traceback
-        return {
-            "error": "Prediction Failed",
-            "details": str(e),
-            "traceback": traceback.format_exc()
-        }
+    return {
+        "risk_probability": round(float(prob), 3),
+        "risk_category": category,
+        "note": "Population-based risk estimate, not a diagnosis",
+        "advice": advice_list  # Sending this ensures the frontend has something to list
+    }
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
