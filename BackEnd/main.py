@@ -89,24 +89,32 @@ def predict(data: PatientInput):
 
     # ---- build dataframe in SAME ORDER ----
     # ---- build input vector directly as list of lists ----
-    # MAINTAIN EXACT ORDER AS IN FEATURES LIST
-    input_vector = [row[f] for f in FEATURES]
-    
-    # prob = model.predict_proba(df)[0][1] # OLD PANDAS WAY
-    prob = model.predict_proba([input_vector])[0][1]
-    category = risk_category(prob)
-    advice_list = ["Maintain a balanced diet", "Regular exercise is recommended"];
-    if category == "High Risk":
-        advice_list = ["Consult a doctor immediately", "Monitor blood pressure daily", "Reduce salt intake"]
-    elif category == "Moderate Risk":
-        advice_list = ["Increase physical activity", "Reduce fatty foods", "Schedule a check-up"]
+    try:
+        # MAINTAIN EXACT ORDER AS IN FEATURES LIST
+        input_vector = [row[f] for f in FEATURES]
+        
+        # prob = model.predict_proba(df)[0][1] # OLD PANDAS WAY
+        prob = model.predict_proba([input_vector])[0][1]
+        category = risk_category(prob)
+        advice_list = ["Maintain a balanced diet", "Regular exercise is recommended"];
+        if category == "High Risk":
+            advice_list = ["Consult a doctor immediately", "Monitor blood pressure daily", "Reduce salt intake"]
+        elif category == "Moderate Risk":
+            advice_list = ["Increase physical activity", "Reduce fatty foods", "Schedule a check-up"]
 
-    return {
-        "risk_probability": round(float(prob), 3),
-        "risk_category": category,
-        "note": "Population-based risk estimate, not a diagnosis",
-        "advice": advice_list  # Sending this ensures the frontend has something to list
-    }
+        return {
+            "risk_probability": round(float(prob), 3),
+            "risk_category": category,
+            "note": "Population-based risk estimate, not a diagnosis",
+            "advice": advice_list
+        }
+    except Exception as e:
+        import traceback
+        return {
+            "error": "Prediction Failed",
+            "details": str(e),
+            "traceback": traceback.format_exc()
+        }
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
