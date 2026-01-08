@@ -21,9 +21,19 @@ app.add_middleware(
 )
 
 # ---------------- LOAD MODEL & FEATURES ----------------
+# ---------------- LOAD MODEL & FEATURES ----------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-model = joblib.load(os.path.join(BASE_DIR, "cardio_model1.pkl"))
-FEATURES = joblib.load(os.path.join(BASE_DIR, "features.pkl"))
+model = None
+FEATURES = []
+LOAD_ERROR = None
+
+try:
+    model = joblib.load(os.path.join(BASE_DIR, "cardio_model1.pkl"))
+    FEATURES = joblib.load(os.path.join(BASE_DIR, "features.pkl"))
+except Exception as e:
+    import traceback
+    LOAD_ERROR = f"Model Load Failed: {str(e)}\n{traceback.format_exc()}"
+    print(LOAD_ERROR)
 
 # ---------------- INPUT SCHEMA ----------------
 class PatientInput(BaseModel):
@@ -90,6 +100,9 @@ def predict(data: PatientInput):
     # ---- build dataframe in SAME ORDER ----
     # ---- build input vector directly as list of lists ----
     try:
+        if LOAD_ERROR:
+             return {"error": "Startup Error", "details": LOAD_ERROR}
+        
         # MAINTAIN EXACT ORDER AS IN FEATURES LIST
         input_vector = [row[f] for f in FEATURES]
         
