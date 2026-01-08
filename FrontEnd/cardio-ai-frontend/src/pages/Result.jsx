@@ -90,7 +90,7 @@ export default function Result() {
   const colorTheme = isHighRisk ? "rose" : "emerald";
 
   return (
-    <div className="container max-w-4xl mx-auto px-4">
+    <PageTransition className="container max-w-4xl mx-auto px-4">
 
       {/* Header */}
       <div className="text-center mb-12">
