@@ -118,6 +118,11 @@ def predict(data: PatientInput):
         
         # prob = model.predict_proba(df)[0][1] # OLD PANDAS WAY
         prob = model.predict_proba([input_vector])[0][1]
+        
+        # Safety Check: Ensure prob is a valid float
+        if prob is None or math.isnan(prob) or math.isinf(prob):
+             prob = 0.0
+
         category = risk_category(prob)
         advice_list = ["Maintain a balanced diet", "Regular exercise is recommended"];
         if category == "High Risk":

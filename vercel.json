@@ -18,8 +18,15 @@
             "dest": "/BackEnd/main.py"
         },
         {
-            "src": "/(.*\\.[^/]+)$",
+            "src": "/assets/(.*)",
+            "dest": "/FrontEnd/cardio-ai-frontend/assets/$1"
+        },
+        {
+            "src": "/(.*)",
             "dest": "/FrontEnd/cardio-ai-frontend/$1"
+        },
+        {
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
