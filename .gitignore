@@ -14,6 +14,9 @@ __pycache__
 dist
 build
 .vercel
+node_modules
+*/node_modules
+*/**/node_modules
 
 # Jupyter
 .ipynb_checkpoints
