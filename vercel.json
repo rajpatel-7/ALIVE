@@ -19,18 +19,18 @@
         },
         {
             "src": "/assets/(.*)",
-            "dest": "/FrontEnd/cardio-ai-frontend/dist/assets/$1"
+            "dest": "/FrontEnd/cardio-ai-frontend/assets/$1"
         },
         {
             "src": "/(.*\\.[^/]+)$",
-            "dest": "/FrontEnd/cardio-ai-frontend/dist/$1"
+            "dest": "/FrontEnd/cardio-ai-frontend/$1"
         },
         {
             "handle": "filesystem"
         },
         {
             "src": "/(.*)",
-            "dest": "/FrontEnd/cardio-ai-frontend/dist/index.html"
+            "dest": "/FrontEnd/cardio-ai-frontend/index.html"
         }
     ]
 }
