@@ -415,11 +415,11 @@ export default function Predict() {
           <h1 className="text-3xl font-bold text-slate-900 font-['Plus_Jakarta_Sans']">Health Assessment</h1>
         </div>
 
-        <p className="text-slate-500 mb-8 pl-12">Complete the following steps to get your risk analysis.</p>
+        <p className="text-slate-500 mb-8 md:pl-12">Complete the following steps to get your risk analysis.</p>
 
-        <div className="flex items-center justify-between relative pl-12">
-          <div className="absolute left-12 right-0 top-1/2 h-1 bg-slate-100 -z-10 rounded-full"></div>
-          <div className="absolute left-12 top-1/2 h-1 bg-indigo-600 -z-10 rounded-full transition-all duration-300"
+        <div className="flex items-start justify-between relative md:pl-12 px-2">
+          <div className="absolute left-2 md:left-12 right-2 top-5 h-1 bg-slate-100 -z-10 rounded-full"></div>
+          <div className="absolute left-2 md:left-12 top-5 h-1 bg-indigo-600 -z-10 rounded-full transition-all duration-300"
             style={{ width: `${((step - 1) / 2) * 100}%` }}></div>
 
           <StepIndicator num={1} label="Identity" current={step} />
