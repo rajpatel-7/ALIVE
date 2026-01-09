@@ -41,6 +41,13 @@ export default function Predict() {
   const nextStep = () => setStep(s => Math.min(s + 1, 3));
   const prevStep = () => setStep(s => Math.max(s - 1, 1));
 
+  // Verify Connection on Mount
+  useEffect(() => {
+    axios.get("https://alive-production-5dc1.up.railway.app/")
+      .then(res => console.log("Backend Connection Success:", res.data))
+      .catch(err => console.warn("Backend Connection Failed (Root): " + err.message));
+  }, []);
+
   // --- Voice Logic Engine ---
   useEffect(() => {
     if (interactionMode !== 'voice') {
@@ -62,12 +69,7 @@ export default function Predict() {
     // Only process if we have a transcript and not currently speaking
     if (!transcript || isSpeaking) return;
 
-    // Verify Connection on Mount
-    useEffect(() => {
-      axios.get("https://alive-production-5dc1.up.railway.app/")
-        .then(res => console.log("Backend Connection Success:", res.data))
-        .catch(err => alert("Backend Connection Failed (Root): " + err.message));
-    }, []);
+
 
     const processAnswer = async () => {
       const text = transcript.toLowerCase();
