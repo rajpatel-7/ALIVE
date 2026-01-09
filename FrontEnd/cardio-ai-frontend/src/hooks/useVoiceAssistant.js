@@ -79,6 +79,15 @@ export default function useVoiceAssistant() {
             }, 300);
         };
 
+        utterance.onerror = (e) => {
+            console.error("Speech Synthesis Error:", e);
+            setIsSpeaking(false);
+            // Attempt to proceed anyway if it was just a playback error
+            setTimeout(() => {
+                if (onEndCallback) onEndCallback();
+            }, 300);
+        };
+
         synth.speak(utterance);
     }, [synth]);
 
